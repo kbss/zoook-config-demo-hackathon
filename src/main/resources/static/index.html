@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sundalio</title>
+
+</head>
+<body>
+<div>
+    <form id="form">
+        <div>
+            <label style="width: 100px">Enabled:</label>
+            <input id="enabled" type="checkbox"/>
+        </div>
+        <div>
+            <label style="width: 100px">Start:</label>
+            <input id="start" maxlength="5" type="text"/>
+        </div>
+        <div>
+            <label style="width: 100px">End:</label>
+            <input id="end" maxlength="5" type="text"/>
+        </div>
+        <div>
+            <label style="width: 100px">zone:</label>
+            <input id="zone" maxlength="5" type="number"/>
+        </div>
+        <div>
+            <label style="width: 100px">max:</label>
+            <input id="max" max="100" maxlength="5" min="0" type="number"/>
+        </div>
+        <div>
+            <label style="width: 100px">A</label>
+            <input id="pwd" type="password"/>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+    <div id="message"></div>
+    <div id="lastActivity" style="font-size: 1.5rem; margin-top: 15px;"></div>
+</div>
+</body>
+</html>
+
+<script>
+
+    const URL = "/services/v1/";
+
+    function httpGetAsync(theUrl, callback) {
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                callback(xmlHttp.responseText);
+                info('Success');
+            } else {
+                info('Error');
+            }
+        }
+        xmlHttp.open("GET", theUrl, true); // true for asynchronous
+        xmlHttp.send(null);
+    }
+
+    const info = function (message) {
+        document.getElementById('message').innerText = message;
+    }
+    httpGetAsync(URL + "int", function (data) {
+        let json = JSON.parse(data);
+        document.getElementById('enabled').checked = json.enabled;
+        document.getElementById('start').value = json.start;
+        document.getElementById('end').value = json.end;
+        document.getElementById('zone').value = json.zone;
+        document.getElementById('max').value = json.max;
+        document.getElementById('lastActivity').innerText = json.lastActivity;
+    });
+
+    document.getElementById("form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", URL, true);
+
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () { // Call a function when the state changes.
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                // Request finished. Do processing here.
+                info("Saved!");
+            }
+        }
+        let enabled = document.getElementById('enabled').checked;
+        let start = document.getElementById('start').value;
+        let end = document.getElementById('end').value;
+        let zone = document.getElementById('zone').value;
+        let max = document.getElementById('max').value;
+        let pwd = document.getElementById('pwd').value;
+        let dto = {end, start, enabled, pwd, zone, max};
+
+        xhr.send(JSON.stringify(dto));
+
+    });
+</script>

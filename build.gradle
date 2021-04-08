@@ -1,0 +1,51 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.4'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '8'
+
+repositories {
+	mavenCentral()
+}
+def zooVersion = '2.2.4.RELEASE'
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+//	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zookeeper', version: '3.0.2'
+//	implementation group: 'org.springframework.cloud', name: 'spring-cloud-zookeeper-config', version: '3.0.2'
+//	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zookeeper-all', version: '3.0.2'
+//	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.0.2'
+//	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zookeeper-discovery', version: '3.0.2'
+//	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zookeeper-config', version: '3.0.2'
+//	implementation group: 'org.springframework.cloud', name: 'spring-cloud-zookeeper-config', version: '3.0.2'
+//	implementation group: 'org.springframework.cloud', name: 'spring-cloud-commons', version: '3.0.2'
+//	implementation group: 'org.springframework.cloud', name: 'spring-cloud-zookeeper-discovery', version: '3.0.2'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-zookeeper', version: "${zooVersion}"
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zookeeper', version: "${zooVersion}"
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-zookeeper-config', version: "${zooVersion}"
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-context', version: '3.0.2'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.0.2'
+
+
+	implementation group: 'org.apache.curator', name: 'curator-recipes', version: '5.1.0'
+
+
+//	implementation group: 'org.apache.curator', name: 'curator-framework', version: '5.1.0'
+
+
+	implementation group: 'org.json', name: 'json', version: '20210307'
+
+	runtimeOnly 'com.h2database:h2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+	useJUnitPlatform()
+}
